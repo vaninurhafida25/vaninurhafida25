@@ -1,0 +1,2123 @@
+FORMAT: 1A
+HOST: http://api-museek.herokuapp.com/
+
+# MUseek App
+
+MUseek adalah aplikasi yang menghubungkan antara Pencari Musisi dengan Musisi dimana pencari musisi bisa melakukan pencarian sekaligus pemesanan jasa Musisi dengan mudah. 
+Dokumentasi API ini digunakan untuk mengakses MUseek App mulai dari mendaftar sebagai user, login sampai melakukan pemesanan musisi.
+
+URL Aplikasi : http://api-museek.herokuapp.com/
+
+## Signup [/signup]
+
+### Signup User [POST]
+
++ Request (application/json)
+
+        {
+            
+            "first_name": "tata",
+            "last_name": "pradipta",
+            "address": "yogya",
+            "email": "tata@email.com",
+            "tlp": "098745373561",
+            "password": "tata"
+                
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "Account created successfully"
+                    },
+                "errors": null
+            }
+
+
++ Response 409 (application/json)
+Jika signup dengan email yang sama/yang sudah terdaftar sebelumnya, maka tidak bisa mendaftar sebagai user
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null
+                "errors": [
+                    "has already been taken"
+                ]
+            }
+
+
+## Login [/auth/login]
+
+### Login User [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                
+                "email": "tata@email.com",
+                "password": "tata",
+                    
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "auth_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+                    },
+                "errors": null
+            }
+        
++ Response 403 (application/json)
+Jika login dengan email dan password salah, 
+maka tidak bisa login
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null,
+                "errors": {
+                    "message": [
+                        "Invalid credentials"
+                    ]
+                }
+            }
+
+
+## CRUD User [/users]
+
+### List All Users [GET /users]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+
++ Response 200 (application/json)
+
+
+        [
+            "status": "OK",
+                "result": 
+                    {
+                        "id": 1,
+                        "first_name": "tata",
+                        "last_name": "pradipta",
+                        "address": "yogya",
+                        "email": "tata@email.com",
+                        "tlp": "098745373561",
+                        "password_digest": "$2a$10$bx9OQTEvPOGQmOTpaGMFUOwcLnJ0gVeXgSBSYpt2x1KHG4p0J0brm",
+                        "created_at": "2018-05-30T01:40:11.783Z",
+                        "updated_at": "2018-05-30T01:40:11.783Z"
+                    },
+                    {
+                        "id": 2,
+                        "first_name": "atha",
+                        "last_name": "ana",
+                        "address": "jogja",
+                        "email": "atha@gmail.com",
+                        "tlp": "0867567466",
+                        "password_digest": "$2a$10$l5V1MXwYqne1Wb7SN81pb.guh7ucMdNDpeIzYgNqRB88/QYIdlHry",
+                        "created_at": "2018-05-30T02:10:05.397Z",
+                        "updated_at": "2018-05-30T02:10:05.397Z"
+                    },
+            "errors": null
+                    
+        ]
+
+
+### List Detail Users [GET /users/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": 
+                {
+                    "id": 1,
+                    "first_name": "tata",
+                    "last_name": "pradipta",
+                    "address": "yogya",
+                    "email": "tata@email.com",
+                    "tlp": "098745373561",
+                    "password_digest": "$2a$10$bx9OQTEvPOGQmOTpaGMFUOwcLnJ0gVeXgSBSYpt2x1KHG4p0J0brm",
+                    "created_at": "2018-05-31T14:51:57.343Z",
+                    "updated_at": "2018-06-01T03:44:44.946Z"
+                },
+            "errors": null
+        }
+
+
+### Update User [PUT /users/{id}]
+
++ Parameters
+    + id (number) - ID of user must integer
+
++ Request (application/json)
+    
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+            "first_name": "Sasuke"
+            }
+    
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                            "id": 1,
+                            "first_name": "Sasuke",
+                            "last_name": "pradipta",
+                            "address": "yogya",
+                            "email": "tata@email.com",
+                            "tlp": "098745373561",
+                            "password_digest": "$2a$10$bx9OQTEvPOGQmOTpaGMFUOwcLnJ0gVeXgSBSYpt2x1KHG4p0J0brm",
+                            "created_at": "2018-05-31T14:51:57.343Z",
+                            "updated_at": "2018-06-01T03:44:44.946Z"
+                },
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "first_name": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete User [DELETE /users/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of user must integer
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                "result": "User has been deleted",
+                "errors": null
+            }
+
+
+## CRUD Role [/roles]
+
+### Create Role [POST/roles]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                
+                "role_name": "musician"
+                    
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "Role created successfully"
+                    },
+                "errors": null
+            }
+
+
++ Response 409 (application/json)
+Jika nama role sudah ada sebelumnya, maka tidak bisa input role dengan nama yg sama
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null
+                "errors": [
+                    "has already been taken"
+                ]
+            }
+
+### List All Roles [GET /roles]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+
++ Response 200 (application/json)
+
+        [
+            "status": "OK",
+                "result": [
+                        {
+                            "id": 1,
+                            "role_name": "admin",
+                            "created_at": "2018-06-08T13:47:17.165Z",
+                            "updated_at": "2018-06-08T13:47:17.165Z"
+                        },
+                        {
+                            "id": 2,
+                            "role_name": "musician",
+                            "created_at": "2018-06-08T13:58:51.049Z",
+                            "updated_at": "2018-06-08T13:58:51.049Z"
+                        }
+                ],
+            "errors": null
+        ]
+
+
+### List Detail Roles [GET /roles/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": 
+                {
+                    "id": 1,
+                    "role_name": "admin",
+                    "created_at": "2018-06-08T13:47:17.165Z",
+                    "updated_at": "2018-06-08T13:47:17.165Z"
+                },
+            "errors": null
+        }
+
+
+### Update Role [PUT /roles/{id}]
+
++ Parameters
+    + id (number) - ID of role must integer
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+            "role_name": "superadmin"
+            }
+    
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                            "id": 1,
+                            "role_name": "superadmin",
+                            "created_at": "2018-06-08T13:47:17.165Z",
+                            "updated_at": "2018-06-08T13:47:17.165Z"
+                },
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "role_name": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete Role [DELETE /roles/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of role must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "Role has been deleted",
+                "errors": null
+            }
+
+## CRUD Genre [/genres]
+
+### Create Genre [POST/genres]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                
+                "name_genre": "Pop"
+                    
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "Genre created successfully"
+                    },
+                "errors": null
+            }
+
+
++ Response 409 (application/json)
+Jika nama genre sudah ada sebelumnya, maka tidak bisa input genre dengan nama yg sama
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null
+                "errors": [
+                    "has already been taken"
+                ]
+            }
+
+### List All Genres [GET /genres]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+                        {
+                            "id": 1,
+                            "name_genre": "Dangdut",
+                            "created_at": "2018-06-19T06:28:59.953Z",
+                            "updated_at": "2018-06-19T06:28:59.953Z"
+                        },
+                        {
+                            "id": 2,
+                            "name_genre": "Pop",
+                            "created_at": "2018-06-19T06:28:38.445Z",
+                            "updated_at": "2018-06-19T06:29:12.027Z"
+                        },
+                        {
+                            "id": 3,
+                            "name_genre": "Rock",
+                            "created_at": "2018-06-19T06:57:08.985Z",
+                            "updated_at": "2018-06-19T06:57:08.985Z"
+                        }
+                    ],
+            "errors": null
+        }
+
+
+### List Detail Genres [GET /genres/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Response 200 (application/json)
+
+        {
+                "status": "OK",
+                "result": {
+                            "id": 1,
+                            "name_genre": "Pop",
+                            "created_at": "2018-06-19T06:28:38.445Z",
+                            "updated_at": "2018-06-19T06:29:12.027Z"
+                },
+            "errors": null
+        }
+
+
+### Update Genre [PUT /genres/{id}]
+
++ Parameters
+    + id (number) - ID of genre must integer
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+            "name_genre": "Dangdut"
+            }
+    
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                            "id": 1,
+                            "name_genre": "Dangdut",
+                            "created_at": "2018-06-08T13:47:17.165Z",
+                            "updated_at": "2018-06-08T13:47:17.165Z"
+                },
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "name_genre": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete Genre [DELETE /genres/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of genre must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "Genre has been deleted",
+                "errors": null
+            }
+
+## CRUD Type of Musician [/type_musicians]
+
+### Create Type of Musician [POST/type_musicians]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                
+                "name_tm": "Solois"
+                    
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "Type of Musician created successfully"
+                    },
+                "errors": null
+            }
+
+
++ Response 409 (application/json)
+Jika nama tipe musisi sudah ada sebelumnya, maka tidak bisa input tipe musisi dengan nama yg sama
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null
+                "errors": [
+                    "has already been taken"
+                ]
+            }
+
+### List All Type of Musician [GET /type_musicians]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+
++ Response 200 (application/json)
+
+        {
+                "status": "OK",
+                "result": [
+                            {
+                                "id": 1,
+                                "name_tm": "Solois",
+                                "created_at": "2018-06-14T04:30:46.062Z",
+                                "updated_at": "2018-06-14T04:30:46.062Z"
+                            },
+                            {
+                                "id": 2,
+                                "name_tm": "Group",
+                                "created_at": "2018-06-14T04:32:01.017Z",
+                                "updated_at": "2018-06-14T04:32:01.017Z"
+                            }
+                ],
+            "errors": null
+        }
+
+
+### List Detail Type of Musician [GET /type_musicians/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                    "id": 1,
+                    "name_tm": "Solois",
+                    "created_at": "2018-06-14T04:32:01.017Z",
+                    "updated_at": "2018-06-14T04:32:01.017Z"
+                },
+            "errors": null
+        }
+
+
+### Update Type of Musician [PUT /type_musicians/{id}]
+
++ Parameters
+    + id (number) - ID of type must integer
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+            "name_tm": "Group"
+            }
+    
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                            "id": 1,
+                            "name_tm": "Group",
+                            "created_at": "2018-06-08T13:47:17.165Z",
+                            "updated_at": "2018-06-08T13:47:17.165Z"
+                },
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "name_tm": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete Type of Musician [DELETE /type_musicians/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of type must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "Type of Musician has been deleted",
+                "errors": null
+            }
+
+## CRUD Status [/statuses]
+
+### Create Status [POST/statuses]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                
+                "status_name": "Booked"
+                    
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "Status created successfully"
+                    },
+                "errors": null
+            }
+
+
++ Response 409 (application/json)
+Jika nama status sudah ada sebelumnya, maka tidak bisa input status dengan nama yg sama
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null
+                "errors": [
+                    "has already been taken"
+                ]
+            }
+
+### List All Status [GET /statuses]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "status_name": "Booked",
+                    "created_at": "2018-06-19T11:40:45.983Z",
+                    "updated_at": "2018-06-19T11:40:45.983Z"
+                },
+                {
+                    "id": 2,
+                    "status_name": "Cancel",
+                    "created_at": "2018-06-19T11:41:03.454Z",
+                    "updated_at": "2018-06-19T11:41:03.454Z"
+                },
+                {
+                    "id": 3,
+                    "status_name": "Awaiting Payment",
+                    "created_at": "2018-06-19T11:41:17.557Z",
+                    "updated_at": "2018-06-19T11:44:54.844Z"
+                }
+            ],
+            "errors": null
+        }
+
+
+### List Detail Status [GET /statuses/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": {
+                "id": 1,
+                "status_name": "Booked",
+                "created_at": "2018-06-19T11:40:45.983Z",
+                "updated_at": "2018-06-19T11:40:45.983Z"
+            },
+            "errors": null
+        }
+
+
+### Update Status [PUT /statuses/{id}]
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+            "status_name": "Available"
+            }
+    
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                            "id": 1,
+                            "status_name": "Available",
+                            "created_at": "2018-06-08T13:47:17.165Z",
+                            "updated_at": "2018-06-08T13:47:17.165Z"
+                },
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "status_name": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete Status [DELETE /statuses/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "Status has been deleted",
+                "errors": null
+            }
+            
+
+## CRUD Musicians [/musicians]
+
+### Create Musicians [POST/musicians]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                
+                "stage_name": "Baggrek",
+                "address": "jl. p puger 2 no 3a rt 09/01 maguwoharjo kec. depok kab. sleman",
+                "tlp_mus": "085727548382",
+                "rate": 4,
+                "harga": 5000000,
+                "note": "acara seru seruan",
+                "link_sound": "",
+                "link_ytb": "https://www.youtube.com/channel/UC8WsVTGSkhJTcaQtmn7GlCw",
+                "foto": "",
+                "user_id": "1",
+                "type_musician_id": "2",
+                "genre_id": "1"
+                "status_id": "1",
+                    
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "Musician created successfully"
+                    },
+                "errors": null
+            }
+
+
++ Response 409 (application/json)
+Jika Stage name sudah ada sebelumnya, maka tidak bisa input musician dengan nama yg sama
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null
+                "errors": [
+                    "has already been taken"
+                ]
+            }
+
+### List All Musicians [GET /musicians]
+
++ Request (application/json)
+    
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "stage_name": "Baggrek",
+                    "address": "jl. p puger 2 no 3a rt 09/01 maguwoharjo kec. depok kab. sleman",
+                    "tlp_mus": "085727548382",
+                    "rate": 4,
+                    "harga": 5000000,
+                    "note": "acara seru seruan",
+                    "link_sound": "",
+                    "link_ytb": "https://www.youtube.com/channel/UC8WsVTGSkhJTcaQtmn7GlCw",
+                    "foto": "",
+                    "user_id": "Martha",
+                    "type_musician_id": "Solois",
+                    "genre_id": "Pop"
+                    "status_id": "Booked",
+                    "created_at": "2018-06-19T11:40:45.983Z",
+                    "updated_at": "2018-06-19T11:40:45.983Z"
+                },
+                {
+                    "id": 2,
+                    "stage_name": "Dang Goreng",
+                    "address": "jl. p puger 2 no 4a rt 09/01 maguwoharjo kec. depok kab. sleman",
+                    "tlp_mus": "085727548382",
+                    "rate": 4,
+                    "harga": 4000000,
+                    "note": "acara seru seruan",
+                    "link_sound": "https://soundcloud.com/danggoreng",
+                    "link_ytb": "https://www.youtube.com/channel/UC8WsVTGSkhJTcaQtmn7GlCw",
+                    "foto": {
+                        "url": "http://res.cloudinary.com/marthak27/image/upload/v1530708199/kf1d00bn24wxn4ysqgej.jpg"
+                    },
+                    "user_id": "Tata",
+                    "type_musician_id": "Solois",
+                    "genre_id": "Pop"
+                    "status_id": "Booked",
+                    "created_at": "2018-06-19T11:40:45.983Z",
+                    "updated_at": "2018-06-19T11:40:45.983Z"
+                }
+            ],
+            "errors": null
+        }
+
+
+### List Detail Musicians [GET /musicians/{id}]
+
++ Request (application/json)
+
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": {
+                "id": 2,
+                "stage_name": "Dang Goreng",
+                "address": "jl. p puger 2 no 4a rt 09/01 maguwoharjo kec. depok kab. sleman",
+                "tlp_mus": "085727548382",
+                "rate": 4,
+                "harga": 4000000,
+                "note": "acara seru seruan",
+                "link_sound": "https://soundcloud.com/danggoreng",
+                "link_ytb": "https://www.youtube.com/channel/UC8WsVTGSkhJTcaQtmn7GlCw",
+                "foto": {
+                    "url": "http://res.cloudinary.com/marthak27/image/upload/v1530708199/kf1d00bn24wxn4ysqgej.jpg"
+                },
+                "user_id": "Tata",
+                "type_musician_id": "Solois",
+                "genre_id": "Pop"
+                "status_id": "Booked",
+                "created_at": "2018-06-19T11:40:45.983Z",
+                "updated_at": "2018-06-19T11:40:45.983Z"
+            },
+            "errors": null
+        }
+        
+### List Filter by Genre [GET /musicians?by_genre={id}]
+
++ Parameters
+    + id (number) - ID of GENRE must integer
+
++ Request (application/json)
+
+
++ Response 200
+
+        {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 2,
+                    "stage_name": "Band ku",
+                    "address": "Jogja",
+                    "tlp_mus": "08576866818",
+                    "rate": "2.0",
+                    "harga": 500000,
+                    "note": "aaaaaaaaaaaaaaaaaa",
+                    "link_sound": "https://soundcloud.com/yurayunita",
+                    "link_ytb": "https://www.youtube.com/watch?v=py6GDNgye6k",
+                    "foto": {
+                        "url": "http://res.cloudinary.com/marthak27/image/upload/v1531220322/fbmvu48gb8x4ma4trwbu.jpg"
+                    },
+                    "user_id": 1,
+                    "type_musician_id": 1,
+                    "genre_id": 1,
+                    "status_id": 1,
+                    "created_at": "2018-07-09T07:19:52.803Z",
+                    "updated_at": "2018-07-10T10:58:42.174Z",
+                    "type_event_id": 2
+                }
+            ],
+            "errors": null
+        }
+
+
+### Update Musicians [PUT /musicians/{id}]
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Request (application/json)
+    
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+            "stage_name": "Dang Asem"
+            }
+    
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                            "id": 2,
+                            "stage name": "Dang Asem",
+                            "address": "jl. p puger 2 no 4a rt 09/01 maguwoharjo kec. depok kab. sleman",
+                            "tlp_mus": "085727548382",
+                            "rate": 4,
+                            "harga": 4000000,
+                            "note": "acara seru seruan",
+                            "link_sound": "https://soundcloud.com/danggoreng",
+                            "link_ytb": "https://www.youtube.com/channel/UC8WsVTGSkhJTcaQtmn7GlCw",
+                            "foto": {
+                                "url": "http://res.cloudinary.com/marthak27/image/upload/v1530708199/kf1d00bn24wxn4ysqgej.jpg"
+                            },
+                            "user_id": "Tata",
+                            "type_musician_id": "Solois",
+                            "genre_id": "Pop"
+                            "status_id": "Booked",
+                            "created_at": "2018-06-08T13:47:17.165Z",
+                            "updated_at": "2018-06-08T13:47:17.165Z"
+                },
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                            "user": [
+                                "must exist"
+                            ],
+                            "type_musician": [
+                                "must exist"
+                            ],
+                            "genre": [
+                                "must exist"
+                            ],
+                            "status": [
+                                "must exist"
+                            ],
+                            "stage_name": [
+                                "can't be blank"
+                            ],
+                            "address": [
+                                "can't be blank"
+                            ],
+                            "tlp_mus": [
+                                "can't be blank"
+                            ],
+                            "rate": [
+                                "can't be blank"
+                            ],
+                            "harga": [
+                                "can't be blank"
+                            ],
+                            "note": [
+                                "can't be blank"
+                            ],
+                            "link_sound": [
+                                "can't be blank"
+                            ],
+                            "link_ytb": [
+                                "can't be blank"
+                            ],
+                            "foto": [
+                                "can't be blank"
+                            ]
+                }
+            }
+
+
+### Delete Musicians [DELETE /musicians/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "Musician has been deleted",
+                "errors": null
+            }
+            
+## CRUD Booklist [/booklists]
+
+### Create Booklist [POST/book_lists]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                
+                "name_event": "Maguwoharjo bernyanyi",
+                "time": "2000-01-01T20:00:00.000Z",
+                "date": "2018-07-25",
+                "place": "Maguwoharjo",
+                "type_event_id": 1,
+                "file": {
+                    "url": "http://res.cloudinary.com/marthak27/image/upload/v1530103271/olgjyedt0xc0slawj7ab.jpg"
+                },
+                "spec_note": "test1 test 2 test 3",
+                "user_id": 1,
+                "musician_id": 1,
+                "status_id": 1
+     
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "id": 1,
+                                "name_event": "Maguwoharjo bernyanyi",
+                                "time": "2000-01-01T20:00:00.000Z",
+                                "date": "2018-07-25",
+                                "place": "Maguwoharjo",
+                                "type_event": "rame rame",
+                                "file": {
+                                    "url": "http://res.cloudinary.com/marthak27/image/upload/v1530103271/olgjyedt0xc0slawj7ab.jpg"
+                                },
+                                "spec_note": "test1 test 2 test 3",
+                                "user_id": 1,
+                                "musician_id": 1,
+                                "status_id": 1,
+                                "type_event_id": 1
+                    },
+                "errors": null
+            }
+
+
++ Response 409 (application/json)
+Jika Stage name sudah ada sebelumnya, maka tidak bisa input musician dengan nama yg sama
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null
+                "errors": [
+                    "has already been taken"
+                ]
+            }
+
+### List All Booklist [GET /book_lists]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "name_event": "Maguwoharjo bernyanyi",
+                    "time": "2000-01-01T20:00:00.000Z",
+                    "date": "2018-07-25",
+                    "place": "Maguwoharjo",
+                    "file": {
+                        "url": "http://res.cloudinary.com/marthak27/image/upload/v1530103271/olgjyedt0xc0slawj7ab.jpg"
+                    },
+                    "spec_note": "test1 test 2 test 3",
+                    "user_id": 1,
+                    "musician_id": 1,
+                    "status_id": 1,
+                    "type_event_id": 1,
+                    "created_at": "2018-06-27T16:08:45.622Z",
+                    "updated_at": "2018-06-27T16:09:16.354Z"
+                },
+                {
+                    "id": 2,
+                    "name_event": "lombok ria",
+                    "time": "2000-01-01T20:00:00.000Z",
+                    "date": "2018-07-25",
+                    "place": "tegal",
+                    "file": {
+                        "url": "http://res.cloudinary.com/marthak27/image/upload/v1530115724/y6sodf95cellaljyyo6r.jpg"
+                    },
+                    "spec_note": "safdafef",
+                    "user_id": 3,
+                    "musician_id": 3,
+                    "status_id": 1,
+                    "type_event_id": 1,
+                    "created_at": "2018-06-27T16:08:45.622Z",
+                    "updated_at": "2018-06-27T16:09:16.354Z"
+                }
+            ],
+            "errors": null
+        }
+
+
+### List Detail Booklist [GET /book_lists/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Response 200 (application/json)
+
+        {
+            "id": 2,
+            "name_event": "lombok ria",
+            "time": "2000-01-01T20:00:00.000Z",
+            "date": "2018-07-25",
+            "place": "tegal",
+            "file": {
+                "url": "http://res.cloudinary.com/marthak27/image/upload/v1530115724/y6sodf95cellaljyyo6r.jpg"
+            },
+            "spec_note": "safdafef",
+            "user_id": 3,
+            "musician_id": 3,
+            "status_id": 1,
+            "type_event_id": 1,
+            "created_at": "2018-06-27T16:08:45.622Z",
+            "updated_at": "2018-06-27T16:09:16.354Z"
+            },
+            "errors": null
+        }
+        
++ Response 409 (application/json)
+Jika ID tidak ada sebelumnya, maka tidak bisa get
+
+    + Body
+
+            {
+               "message": "Couldn't find BookList with 'id'=#"
+            }
+
+
+
+### Update Booklist [PUT /book_lists/{id}]
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Request (application/json)
+    
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+            "name_event": "Dang Asem"
+            }
+    
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                            "id": 2,
+                            "name_event": "Dang goreng",
+                            "file": {
+                                "url": "http://res.cloudinary.com/marthak27/image/upload/v1530115724/y6sodf95cellaljyyo6r.jpg"
+                            },
+                            "time": "2000-01-01T20:00:00.000Z",
+                            "date": "2018-07-25",
+                            "place": "tegal",
+                            "spec_note": "safdafef",
+                            "user_id": 3,
+                            "musician_id": 3,
+                            "status_id": 1,
+                            "type_event_id": 1,
+                            "created_at": "2018-06-27T16:08:45.622Z",
+                            "updated_at": "2018-07-02T19:11:26.351Z"
+                },
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "name_event": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete Booklist [DELETE /book_lists/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "Booklist has been deleted",
+                "errors": null
+            }
+            
+## CRUD Payment [/payments]
+
+### Create Payment [POST/payments]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                "id": 2,
+                "advance": 2500,
+                "max_payment": 5000,
+                "book_list_id": 1,
+                "user_id": 2,
+                "status_id": 1,
+                "musician_id": 3
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                    "result": {
+                                "id": 2,
+                                "advance": 2500,
+                                "max_payment": 5000,
+                                "book_list_id": 1,
+                                "user_id": 2,
+                                "status_id": 1,
+                                "musician_id": 3,
+                                "created_at": "2018-07-02T19:21:25.104Z",
+                                "updated_at": "2018-07-02T19:21:25.104Z"
+                    },
+                "errors": null
+            }
+
+
++ Response 409 (application/json)
+Jika field ada yg kosong sudah, maka tidak bisa input data
+
+    + Body
+
+            {
+                "status": "FAIL",
+                    "result": null
+                "errors": "user": [
+                    "must exist"
+                ]
+            }
+
+### List All Payment [GET /payments]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "advance": 2500,
+                    "max_payment": 5000,
+                    "book_list_id": 1,
+                    "user_id": 1,
+                    "status_id": 1,
+                    "musician_id": 3,
+                    "created_at": "2018-06-30T16:10:57.863Z",
+                    "updated_at": "2018-06-30T16:10:57.863Z"
+                },
+                {
+                    "id": 2,
+                    "advance": 2500,
+                    "max_payment": 5000,
+                    "book_list_id": 1,
+                    "user_id": 2,
+                    "status_id": 1,
+                    "musician_id": 3,
+                    "created_at": "2018-07-02T19:21:25.104Z",
+                    "updated_at": "2018-07-02T19:21:25.104Z"
+                }
+            ],
+            "errors": null
+        }
+
+
+### List Detail Payment [GET /payments/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Response 200 (application/json)
+
+        {
+            "id": 2,
+            "advance": 2500,
+            "max_payment": 5000,
+            "book_list_id": 1,
+            "user_id": 2,
+            "status_id": 1,
+            "musician_id": 3,
+            "created_at": "2018-07-02T19:21:25.104Z",
+            "updated_at": "2018-07-02T19:21:25.104Z"
+            },
+            "errors": null
+        }
+        
++ Response 409 (application/json)
+Jika ID tidak ada sebelumnya, maka tidak bisa get
+
+    + Body
+
+            {
+               "message": "Couldn't find Payment with 'id'=#"
+            }
+
+
+
+### Update Payment [PUT /payments/{id}]
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Request (application/json)
+
+        
+    
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+                "advance": "3000"
+            }
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+                "result": {
+                            "id": 2,
+                            "advance": 3000,
+                            "max_payment": 5000,
+                            "book_list_id": 1,
+                            "user_id": 2,
+                            "status_id": 1,
+                            "musician_id": 3,
+                            "created_at": "2018-07-02T19:21:25.104Z",
+                            "updated_at": "2018-07-02T19:21:25.104Z"
+                },
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "advance": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete Payment [DELETE /payments/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "Payment has been deleted",
+                "errors": null
+            }
+            
+## CRUD FAQ [/faqs]
+
+### Create FAQ [POST/faqs]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "question": "Apa itu MUseek ?",
+                "answer": "MUseek adalah .....................................",
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                "result": "FAQ created successfully",
+                "errors": null
+            }
+
+
+### List All FAQ [GET /faqs]
+
++ Request (application/json)
+    
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "question": "Apa itu MUseek ?",
+                    "answer": "MUseek adalah .....................................",
+                    "created_at": "2018-07-04T14:12:38.171Z",
+                    "updated_at": "2018-07-04T14:12:38.171Z"
+                }
+            ],
+            "errors": null
+        }
+
+
+### List Detail FAQ [GET /faqs/{id}]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+         {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "question": "Apa itu MUseek ?",
+                    "answer": "MUseek adalah .....................................",
+                    "created_at": "2018-07-04T14:12:38.171Z",
+                    "updated_at": "2018-07-04T14:12:38.171Z"
+                }
+            ],
+            "errors": null
+        }
+        
++ Response 409 (application/json)
+Jika ID tidak ada sebelumnya, maka tidak bisa get
+
+    + Body
+
+            {
+            "message": "Couldn't find Faq with 'id'=2"
+            }
+
+
+
+### Update FAQ [PUT /faqs/{id}]
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Request (application/json)
+    
+    
++ Body
+
+            {
+                "answer": "MUseek adalah aplikasi yang menghubungkan antara Pencari Musisi dengan Musisi dimana pencari musisi bisa melakukan pencarian sekaligus pemesanan jasa Musisi dengan mudah."
+            }
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "question": "Apa itu MUseek ?",
+                    "answer": "MUseek adalah aplikasi yang menghubungkan antara Pencari Musisi dengan Musisi dimana pencari musisi bisa melakukan pencarian sekaligus pemesanan jasa Musisi dengan mudah.",
+                    "created_at": "2018-07-04T14:12:38.171Z",
+                    "updated_at": "2018-07-04T14:12:38.171Z"
+                }
+            ],
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "answer": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete FAQ [DELETE /faqs/{id}]
+
++ Request (application/json)
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "FAQ has been deleted",
+                "errors": null
+            }
+
+
+## CRUD About Museek [/about_musiks]
+
+### Create About Museek [POST/about_musiks]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                "title": "Tentang MUseek",
+                "description": "MUseek adalah ...........................................................",
+                "image": {
+                            "url": "http://res.cloudinary.com/marthak27/image/upload/v1531372995/hw8bdpzmbxtozq2ccotl.jpg"
+                        },
+                "admin_user_id": 1
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                "result": "About Musik created successfully",
+                "errors": null
+            }
+
+
+### List All About Museek [GET /about_musiks]
+
++ Request (application/json)
+    
+
++ Response 200 (application/json)
+
+        {
+            "status": "ok",
+            "result": [
+                {
+                    "id": 1,
+                    "title": "Tentang MUseek",
+                    "description": "MUseek adalah ...........................................................",
+                    "image": {
+                        "url": "http://res.cloudinary.com/marthak27/image/upload/v1531372995/hw8bdpzmbxtozq2ccotl.jpg"
+                    },
+                    "admin_user_id": 1,
+                    "created_at": "2018-07-12T05:23:15.533Z",
+                    "updated_at": "2018-07-12T05:23:15.533Z"
+                }
+            ],
+            "errors": null
+        }
+
+
+### List Detail About Museek [GET /about_musiks/{id}]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+         {
+            "status": "ok",
+            "result": [
+                {
+                    "id": 1,
+                    "title": "Tentang MUseek",
+                    "description": "MUseek adalah ...........................................................",
+                    "image": {
+                        "url": "http://res.cloudinary.com/marthak27/image/upload/v1531372995/hw8bdpzmbxtozq2ccotl.jpg"
+                    },
+                    "admin_user_id": 1,
+                    "created_at": "2018-07-12T05:23:15.533Z",
+                    "updated_at": "2018-07-12T05:23:15.533Z"
+                }
+            ],
+            "errors": null
+        }
+        
++ Response 409 (application/json)
+Jika ID tidak ada sebelumnya, maka tidak bisa get
+
+    + Body
+
+            {
+            "message": "Couldn't find About musik with 'id'=2"
+            }
+
+
+
+### Update About Museek [PUT /about_musiks/{id}]
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Request (application/json)
+    
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+                "description": "MUseek adalah aplikasi yang bagus",
+            }
+
++ Response 200 (application/json)
+
+        {
+            "status": "ok",
+            "result": [
+                {
+                    "id": 1,
+                    "title": "Tentang MUseek",
+                    "description": "MUseek adalah aplikasi yang bagus",
+                    "image": {
+                        "url": "http://res.cloudinary.com/marthak27/image/upload/v1531372995/hw8bdpzmbxtozq2ccotl.jpg"
+                    },
+                    "admin_user_id": 1,
+                    "created_at": "2018-07-12T05:23:15.533Z",
+                    "updated_at": "2018-07-12T05:23:15.533Z"
+                }
+            ],
+            "errors": null
+        }
+
+
+### Delete About Museek [DELETE /about_musiks/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "About Museek has been deleted",
+                "errors": null
+            }
+            
+
+            
+## CRUD Type of Event [/type_events]
+
+### Create Type of Event [POST/type_events]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+            
+    + Body
+
+            {
+                "name": "Showcase"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": "OK",
+                "result": "Type of Event created successfully",
+                "errors": null
+            }
+
+
+### List All Type of Event [GET /type_events]
+
++ Request (application/json)
+    
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+               {
+                    "id": 1,
+                    "name": "Ulang Tahun",
+                    "created_at": "2018-07-05T12:15:32.470Z",
+                    "updated_at": "2018-07-05T13:08:51.961Z"
+                },
+                {
+                    "id": 2,
+                    "name": "Pesta Pernikahan",
+                    "created_at": "2018-07-05T12:15:58.598Z",
+                    "updated_at": "2018-07-05T12:15:58.598Z"
+                },
+                {
+                    "id": 3,
+                    "name": "Showcase",
+                    "created_at": "2018-07-05T12:16:51.825Z",
+                    "updated_at": "2018-07-05T12:16:51.825Z"
+                },
+            ],
+            "errors": null
+        }
+
+
+### List Detail Type of Event  [GET /type_events/{id}]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+         {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "name": "Ulang Tahun",
+                    "created_at": "2018-07-05T12:15:32.470Z",
+                    "updated_at": "2018-07-05T13:08:51.961Z"
+                }
+            ],
+            "errors": null
+        }
+        
++ Response 409 (application/json)
+Jika ID tidak ada sebelumnya, maka tidak bisa get
+
+    + Body
+
+            {
+            "message": "Couldn't find Faq with 'id'=4"
+            }
+
+
+
+### Update Type of Event [PUT /type_events/{id}]
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Request (application/json)
+    
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+    
+    + Body
+
+            {
+                "name": "Makan Malam Romantis"
+            }
+
++ Response 200 (application/json)
+
+        {
+            "status": "OK",
+            "result": [
+                {
+                    "id": 1,
+                    "name": "Makan Malam Romantis",
+                    "created_at": "2018-07-05T12:15:32.470Z",
+                    "updated_at": "2018-07-05T13:08:51.961Z"
+                }
+            ],
+            "errors": null
+        }
+        
++ Response 422 (application/json)
+Jika field yang akan diedit kosong, maka akan muncul pesan dimana field tersebut
+ tidak boleh kosong
+ 
+ + Body
+
+            {
+                "status": "FAIL",
+                "result": null,
+                "errors": {
+                        "name": [
+                            "can't be blank"
+                        ]
+                }
+            }
+
+
+### Delete Type of Event [DELETE /type_events/{id}]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE1Mjc5Mjg4NDV9.9k1N9JM02mzHDb4nt1KpfJr0poSBCNPS2vr_fwa0Bro"
+
++ Parameters
+    + id (number) - ID of status must integer
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+                "status": "OK",
+                "result": "Type event has been deleted",
+                "errors": null
+            }
+    
+    
+    
+
