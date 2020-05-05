@@ -1,0 +1,1572 @@
+FORMAT: 1A
+HOST: https://app.beecloud.id/api/v1
+
+# Dokumentasi API Beecloud
+
+API untuk integrasi dari client ke database Beecloud
+
+# Requirement
+Dibutuhkan User Beecloud untuk authorisasi menggunakan api key saat request API
+
+# Method Request
+
+- POST    : Update resource
+- GET     : Get a resource or list of resource
+
+# Description Of Usual Server Responses
+- 200 `OK` - the request was successful (some API calls may return 201 instead)
+- 201 `Created` - the request was successful and a resource was created.
+- 204 `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+- 400 `Bad Request` - the request could not be understood or was missing required parameters.
+- 401 `Unauthorized` - authentication failed or user doesn't have permissions for requested operation.
+- 403 `Forbidden` - access denied.
+- 404 `Not Found` - resource was not found.405 Method Not Allowed - requested method is not supported for resource.
+
+# Group Item
+API untuk request Item
+
+## Struktur Data 
+- id `(bigint)` `(not null)` : ID Item
+- name1 `(string)` `(not null)` : Nama Item
+- name2 `(string)` : Nama Item Alias
+- barcode `(string)` `(unique)` : Barcode Item
+- brand_id `(bigint)` `(fk id brand)` : ID Merk
+- itemtype_code `(string)` `(fk code itemtype)` : Kode Tipe Item
+- usepid `(boolean)` : Boolean Item Menggunakan PID atau tidak
+- uniquepid `(boolean)` : Boolean Item Menggunakan PID unik atau tidak
+- itemgrp1_id `(boolean)` `(fk id itemgrp1)` : ID Grup Item 1
+- itemgrp2_id `(boolean)` `(fk id itemgrp2)` : ID Grup Item 2
+- itemgrp3_id `(boolean)` `(fk id itemgrp3)` : ID Grup Item 3
+- accinv `(bigint)` `(fk id acc)` : ID akun Persedian
+- acccost `(bigint)` `(fk id acc)` : ID akun HPP
+- accsale `(bigint)` `(fk id acc)` : ID akun Penjualan
+- accsret `(bigint)` `(fk id acc)` : ID akun Retur Penjualan
+- ispurc `(boolean)` : Boolean Item bisa dibeli atau tidak
+- issale `(boolean)` : Boolean Item bisa dijual atau tidak
+- ismfg `(boolean)` : Boolean Item bisa diproduksi atau tidak
+- isstock `(boolean)` : Boolean Item bisa di-stok atau tidak
+- unitdesc `(string)` : Satuan Item
+- active `(boolean)` : Boolean Item aktif atau tidak
+
+## Request [/item]
+
+### Daftar Semua Item [GET]
+
++ Response 401 (application/json)
+    
+    + Body
+            
+            {
+                "status":false,
+                "data":{
+                    "type": "yii\\web\\UnauthorizedHttpException",
+                    "name": "Unauthorized",
+                    "message": "You are requesting with an invalid access token.",
+                    "code": 0,
+                    "status": 401,
+                }
+            }
+
+
++ Response 200 (application/json)
+    
+    + Headers
+
+            Authorization: Bearer API Key
+            
+    + Attributes
+            - status
+            - data(array[item])
+
+    + Body
+
+            {
+                "status":true,
+                "data":[  
+                    {  
+                      "id":281,
+                      "code":"001180",
+                      "name1":"Dualshock PS3",
+                      "name2":"",
+                      "barcode":null,
+                      "version":3,
+                      "brand_id":null,
+                      "itemtype_code":"GOOD",
+                      "usepid":false,
+                      "uniquepid":false,
+                      "itemgrp1_id":null,
+                      "itemgrp2_id":null,
+                      "itemgrp3_id":null,
+                      "accinv":19,
+                      "acccost":79,
+                      "accsale":72,
+                      "accsret":75,
+                      "ispurc":true,
+                      "isstock":true,
+                      "ismfg":false,
+                      "issale":true,
+                      "unitdesc":"PCS",
+                      "purcqtymin":"0.0000",
+                      "leadtime":0,
+                      "qtymin":"0.0000",
+                      "qtymax":"0.0000",
+                      "qtyreorder":"0.0000",
+                      "qtypo":"0.0000",
+                      "qtyso":"0.0000",
+                      "qtywip":"0.0000",
+                      "note":"",
+                      "active":true,
+                      "pousepid":false,
+                      "sousepid":false,
+                      "vendor_id":null,
+                      "vitemcode":"",
+                      "purcunit":783,
+                      "saleunit":783,
+                      "stockunit":783,
+                      "created_at":"2017-03-22 09:15:39.105505",
+                      "created_by":3,
+                      "updated_at":"2017-03-22 09:15:39.105505",
+                      "updated_by":3,
+                      "costtype":"AVG",
+                      "isimport":false,
+                      "bucket":null,
+                      "objkey":null
+                    }
+                ]
+            }
+
+### Spesifik Item by ID Item [GET /item/{id}]
+
+Ambil Detail item spesifik by ID Item
+
++ Response 401 (application/json)
+    
+    + Body
+            
+            {
+                "status":false,
+                "data":{
+                    "type": "yii\\web\\UnauthorizedHttpException",
+                    "name": "Unauthorized",
+                    "message": "You are requesting with an invalid access token.",
+                    "code": 0,
+                    "status": 401,
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key Beecloud
+    
+    + Attributes
+            - status
+            - data(item)
+
+    + Body
+
+            {
+                "status": true,
+                "data": [
+                    {
+                        "id": 3,
+                        "code": "001003",
+                        "name1": "Dualshock PS3",
+                        "name2": "",
+                        "barcode": null,
+                        "version": 19,
+                        "brand_id": 2,
+                        "itemtype_code": "GOOD",
+                        "usepid": false,
+                        "uniquepid": false,
+                        "itemgrp1_id": null,
+                        "itemgrp2_id": null,
+                        "itemgrp3_id": null,
+                        "accinv": 19,
+                        "acccost": 79,
+                        "accsale": 72,
+                        "accsret": 75,
+                        "ispurc": true,
+                        "isstock": true,
+                        "ismfg": false,
+                        "issale": true,
+                        "unitdesc": "PCS",
+                        "purcqtymin": "0.0000",
+                        "leadtime": 0,
+                        "qtymin": "0.0000",
+                        "qtymax": "0.0000",
+                        "qtyreorder": "0.0000",
+                        "qtypo": "0.0000",
+                        "qtyso": "0.0000",
+                        "qtywip": "0.0000",
+                        "note": "",
+                        "active": true,
+                        "pousepid": false,
+                        "sousepid": false,
+                        "vendor_id": null,
+                        "vitemcode": "",
+                        "purcunit": 7,
+                        "saleunit": 7,
+                        "stockunit": 7,
+                        "created_at": null,
+                        "created_by": null,
+                        "updated_at": "2017-01-14 12:15:23.890591",
+                        "updated_by": 3,
+                        "costtype": "AVG",
+                        "isimport": false,
+                        "bucket": "bitsstorage001",
+                        "objkey": "381fixi/attachment/item/3/2.jpg"
+                    }
+                ]
+            }
+            
+# Group Item Group 1
+API untuk request Item Group 1
+
+## Struktur Data
+- id `(bigint)` : ID Item Group 1
+- code `(string)`: Kode Item Group 1
+- name `(string)`: Nama Item Group 1
+- itemtype_code `(string)` `(fk code itemtype)` : Kode Tipe Item
+- accinv `(bigint)` `(fk id acc)` : ID akun Persedian
+- acccost `(bigint)` `(fk id acc)` : ID akun HPP
+- accsale `(bigint)` `(fk id acc)` : ID akun Penjualan
+- accsret `(bigint)` `(fk id acc)` : ID akun Retur Penjualan
+- active `(boolean)`: Boolean Item Group 1 Aktif atau Tidak
+
+## Request [/itemgroup1]
+
+### Daftar Semua Item Group 1 [GET]
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+            
+    + Body
+
+            {
+                "status": true,
+                "data": [
+                    {
+                        "id": 11,
+                        "code": "000010",
+                        "name": "Celana Pendek",
+                        "level": 1,
+                        "up_id": 1,
+                        "itemtype_code": "GOOD",
+                        "accinv": 19,
+                        "acccost": 79,
+                        "accsale": 72,
+                        "accsret": 75,
+                        "active": true,
+                        "created_at": null,
+                        "created_by": null,
+                        "updated_at": "2016-10-21 10:18:14.301613",
+                        "updated_by": 3,
+                        "isimport": false,
+                        "ispos": false
+                    },
+                    {
+                        "id": 13,
+                        "code": "000012",
+                        "name": "Buku Tulis",
+                        "level": 1,
+                        "up_id": 1,
+                        "itemtype_code": "GOOD",
+                        "accinv": 19,
+                        "acccost": 79,
+                        "accsale": 72,
+                        "accsret": 78,
+                        "active": true,
+                        "created_at": "2016-11-05 09:54:11.60899",
+                        "created_by": 3,
+                        "updated_at": "2016-11-05 09:54:11.60899",
+                        "updated_by": 3,
+                        "isimport": false,
+                        "ispos": false
+                    },
+                    {
+                        "id": 14,
+                        "code": "000013",
+                        "name": "Buku Gambar",
+                        "level": 1,
+                        "up_id": 1,
+                        "itemtype_code": "GOOD",
+                        "accinv": 19,
+                        "acccost": 79,
+                        "accsale": 72,
+                        "accsret": 78,
+                        "active": true,
+                        "created_at": "2016-11-05 09:54:12.168678",
+                        "created_by": 3,
+                        "updated_at": "2016-11-05 09:54:12.168678",
+                        "updated_by": 3,
+                        "isimport": false,
+                        "ispos": false
+                    },
+                    {
+                        "id": 15,
+                        "code": "000014",
+                        "name": "Bulpoin",
+                        "level": 1,
+                        "up_id": 1,
+                        "itemtype_code": "GOOD",
+                        "accinv": 19,
+                        "acccost": 79,
+                        "accsale": 72,
+                        "accsret": 78,
+                        "active": true,
+                        "created_at": "2016-11-05 09:54:12.49875",
+                        "created_by": 3,
+                        "updated_at": "2016-11-05 09:54:12.49875",
+                        "updated_by": 3,
+                        "isimport": false,
+                        "ispos": false
+                    },
+                    {
+                        "id": 17,
+                        "code": "000016",
+                        "name": "Kertas HVS",
+                        "level": 1,
+                        "up_id": 1,
+                        "itemtype_code": "GOOD",
+                        "accinv": 19,
+                        "acccost": 79,
+                        "accsale": 72,
+                        "accsret": 78,
+                        "active": true,
+                        "created_at": "2016-11-05 09:54:13.77459",
+                        "created_by": 3,
+                        "updated_at": "2016-11-05 09:54:13.77459",
+                        "updated_by": 3,
+                        "isimport": false,
+                        "ispos": false
+                    },
+                ]
+            }
+
+# Group Satuan Item
+API untuk request Satuan Item
+
+## Struktur Data
+- id `(bigint)` `(not null)` : ID Satuan
+- item_id `(bigint)` `(not null)` `(fk id item)`: ID Item
+- idx `(smallint)` : Index Satuan
+- unit `(string)` : Keterangan Satuan
+- conv `(numeric(19,4))` : Conversi Satuan
+
+## Request [/unit]
+
+### Daftar Semua Satuan [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+
+    + Body
+    
+            {
+                "status": true,
+                "data": [
+                    {
+                        "id": "918",
+                        "item_id": "336",
+                        "idx": "1",
+                        "unit": "PCS",
+                        "conv": "1.0000",
+                        "updated_at": "2017-10-04 14:34:51.456692"
+                    },
+                    {
+                        "id": "926",
+                        "item_id": "342",
+                        "idx": "1",
+                        "unit": "PCS",
+                        "conv": "1.0000",
+                        "updated_at": "2017-10-04 15:56:20.094449"
+                    },
+                    {
+                        "id": "932",
+                        "item_id": "348",
+                        "idx": "1",
+                        "unit": "PCS",
+                        "conv": "1.0000",
+                        "updated_at": "2017-10-04 15:57:18.114501"
+                    },
+                ]
+            }
+            
+# Group Level Harga
+API untuk request Level Harga
+
+## Struktur Data
+- id `(bigint)` - ID Level Harga
+- code `(string)` - Kode Level Harga
+- name `(String)` - Keterangan Level Harga
+
+## Request [/pricelvl]
+
+### Daftar Semua Level Harga [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+
+    + Body
+    
+            {
+                "status": true,
+                "data": [
+                    {
+                        "id": 1,
+                        "code": "0",
+                        "name": "Retail",
+                        "updated_at": "2017-09-20 16:31:46.639333"
+                    },
+                    {
+                        "id": 2,
+                        "code": "1",
+                        "name": "Partai kecil",
+                        "updated_at": "2017-09-20 16:31:46.639333"
+                    },
+                    {
+                        "id": 3,
+                        "code": "5",
+                        "name": "Grosir",
+                        "updated_at": "2017-09-20 16:31:46.639333"
+                    },
+                ]
+            }
+
+# Group Harga Item
+API untuk request Harga Item
+
+## Struktur Data
+- item_id `(bigint)` `(fk id item)` - ID Item
+- pricelvl_id `(bigint)` `(fk id pricelvl)` - ID Level Harga
+- crc_id `(bigint)` `(fk id crc)` - ID Mata Uang
+- price1 `(numeric(19,4))` - Harga Satuan 1
+- price2 `(numeric(19,4))` - Harga Satuan 2
+- price3 `(numeric(19,4))` - Harga Satuan 3
+- disc1exp `string` - Diskon Ekspresi 1
+- disc2exp `string` - Diskon Ekspresi 2
+- disc3exp `string` - Diskon Ekspresi 3
+
+## Request [/price]
+
+### Daftar Semua Harga Item [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+
+    + Body
+    
+            {
+                "status": true,
+                "data": [
+                    {
+                        "item_id": 3,
+                        "pricelvl_id": 1,
+                        "crc_id": 1,
+                        "price1": "350000.0000",
+                        "disc1exp": "0",
+                        "price2": "327972.2129",
+                        "disc2exp": "0",
+                        "price3": "327972.2129",
+                        "disc3exp": "0",
+                        "pricedate": null,
+                        "usr_id": 3,
+                        "lastpurcprice": "0.0000",
+                        "lastavgcost": "0.0000",
+                        "updated_at": "2018-02-13 11:11:32.139141",
+                        "itemid": "001003",
+                        "crcid": "IDR",
+                        "prclvlid": "0"
+                    },
+                    {
+                        "item_id": 238,
+                        "pricelvl_id": 1,
+                        "crc_id": 1,
+                        "price1": "20460.0000",
+                        "disc1exp": null,
+                        "price2": "20460.0000",
+                        "disc2exp": null,
+                        "price3": "20460.0000",
+                        "disc3exp": null,
+                        "pricedate": null,
+                        "usr_id": 3,
+                        "lastpurcprice": "0.0000",
+                        "lastavgcost": "0.0000",
+                        "updated_at": "2017-10-11 09:36:29.391454",
+                        "itemid": "000061",
+                        "crcid": "IDR",
+                        "prclvlid": "0"
+                    },
+                    {
+                        "item_id": 276,
+                        "pricelvl_id": 1,
+                        "crc_id": 1,
+                        "price1": "6600000.0000",
+                        "disc1exp": "0",
+                        "price2": "6600000.0000",
+                        "disc2exp": "0",
+                        "price3": "6600000.0000",
+                        "disc3exp": "0",
+                        "pricedate": null,
+                        "usr_id": 3,
+                        "lastpurcprice": "0.0000",
+                        "lastavgcost": "0.0000",
+                        "updated_at": "2017-10-11 09:36:30.358623",
+                        "itemid": "001175",
+                        "crcid": "IDR",
+                        "prclvlid": "0"
+                    },
+                ]
+            }
+            
+# Group Gudang
+API untuk request daftar Gudang
+
+## Struktur Data
+- id `(bigint)` - ID Gudang
+- code `(string)` - Kode Gudang
+- name `(string)` - Nama Gudang
+- active `(boolean)` - Boolean Gudang Aktif/Tidak
+
+## Request [/wh]
+
+### Daftar Semua Gudang [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+    + Body
+    
+            {
+                "status" : "true",
+                "data": [
+                    {
+                        "id": 1,
+                        "code": "01",
+                        "name": "Gudang",
+                        "isautoreconcilein": true,
+                        "isautoreconcileout": true,
+                        "active": true,
+                        "created_at": "2015-09-30 09:36:37.801689",
+                        "created_by": 1,
+                        "updated_at": "2015-09-30 09:36:37.801689",
+                        "updated_by": 1,
+                        "version": 3
+                    },
+                    {
+                        "id": 2,
+                        "code": "02",
+                        "name": "Toko",
+                        "isautoreconcilein": true,
+                        "isautoreconcileout": true,
+                        "active": true,
+                        "created_at": "2015-09-30 09:36:37.803149",
+                        "created_by": 1,
+                        "updated_at": "2015-09-30 09:36:37.803149",
+                        "updated_by": 1,
+                        "version": 3
+                    },
+                    {
+                        "id": 3,
+                        "code": "WHSDA",
+                        "name": "Gudang Sidoarjo",
+                        "isautoreconcilein": true,
+                        "isautoreconcileout": true,
+                        "active": true,
+                        "created_at": "2016-12-28 14:29:41.371928",
+                        "created_by": 3,
+                        "updated_at": "2017-07-19 12:01:04.953342",
+                        "updated_by": 3,
+                        "version": 3
+                    }
+                ]
+            }
+            
+# Group Stok
+API untuk request daftar stok item di gudang
+
+## Struktur Data
+- item_id `(bigint)` `(fk id item)` - ID Item
+- wh_id `(bigint)` `(fk id wh)` - ID Gudang
+- pid `(string)` - PID (Produk ID) Item
+- qty `(numeric(19,4))` - Qty Item di Gudang
+- qtypo `(numeric(19,4))` - Qty Item di PO (Purchase Order)
+- qtyso `(numeric(19,4))` - Qty Item di SO (Sales Order)
+- avgcost `(numeric(19,4))` - HPP Item
+
+## Request [/stock]
+
+### Daftar Semua Stok Item [GET]
+
++ Params
+    + lastupdate: `2018-01-01 11:11:11` - ambil daftar stok yang terakhir di update
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+    + Body
+
+            {
+                "status" : "true",
+                "data": [
+                    {
+                        "item_id": 3,
+                        "wh_id": 1,
+                        "pid": "",
+                        "qty": "20.0000",
+                        "qtyx": "0.0000",
+                        "qtypo": "24.5000",
+                        "qtyxpo": null,
+                        "qtyso": "168.0000",
+                        "qtyxso": "0.0000",
+                        "qtydefect": "0.0000",
+                        "qtyxdefect": "0.0000",
+                        "expdate": null,
+                        "location": null,
+                        "qtymin": "10.0000",
+                        "qtymax": "50.0000",
+                        "qtyreorder": "0.0000",
+                        "avgcost": "299855.2297",
+                        "totcost": "0.0000",
+                        "active": true,
+                        "opname_emp_id": null,
+                        "opname_date": null,
+                        "opname_usr_id": null,
+                        "_xt": false,
+                        "subtotal": "5997104.5941",
+                        "updated_at": "2018-03-15 15:10:27.402088",
+                        "itemid": "001003",
+                        "whid": "01",
+                        "lopempid": null
+                    },
+                    {
+                        "item_id": 3,
+                        "wh_id": 2,
+                        "pid": "",
+                        "qty": "1.0000",
+                        "qtyx": "0.0000",
+                        "qtypo": "0.0000",
+                        "qtyxpo": "0.0000",
+                        "qtyso": "0.0000",
+                        "qtyxso": "0.0000",
+                        "qtydefect": "0.0000",
+                        "qtyxdefect": "0.0000",
+                        "expdate": null,
+                        "location": null,
+                        "qtymin": "1.0000",
+                        "qtymax": "30.0000",
+                        "qtyreorder": "0.0000",
+                        "avgcost": "300000.0000",
+                        "totcost": "0.0000",
+                        "active": true,
+                        "opname_emp_id": null,
+                        "opname_date": null,
+                        "opname_usr_id": null,
+                        "_xt": false,
+                        "subtotal": "300000.0000",
+                        "updated_at": "2018-01-30 14:10:17.604089",
+                        "itemid": "001003",
+                        "whid": "02",
+                        "lopempid": null
+                    },
+                    {
+                        "item_id": 3,
+                        "wh_id": 3,
+                        "pid": "",
+                        "qty": "2.0000",
+                        "qtyx": "0.0000",
+                        "qtypo": "0.0000",
+                        "qtyxpo": "0.0000",
+                        "qtyso": "0.0000",
+                        "qtyxso": "0.0000",
+                        "qtydefect": "0.0000",
+                        "qtyxdefect": "0.0000",
+                        "expdate": null,
+                        "location": null,
+                        "qtymin": "0.0000",
+                        "qtymax": "0.0000",
+                        "qtyreorder": "0.0000",
+                        "avgcost": "300000.0000",
+                        "totcost": "0.0000",
+                        "active": true,
+                        "opname_emp_id": null,
+                        "opname_date": null,
+                        "opname_usr_id": null,
+                        "_xt": false,
+                        "subtotal": "600000.0000",
+                        "updated_at": "2018-01-12 16:17:34.80789",
+                        "itemid": "001003",
+                        "whid": "WHSDA",
+                        "lopempid": null
+                    }
+                ]
+            }
+            
+# Group Kota
+API untuk request daftar kota
+
+## Struktur Data
+- code `(string)` - Kode Kota
+- name `(string)` - Nama Kota
+
+## Request [/city]
+
+### Daftar Semua Kota [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+    + Body
+
+            {
+                "status" : "true",
+                "data": [
+                    {
+                        "code": "001",
+                        "name": "Aceh Barat",
+                        "updated_at": "2017-11-29 13:51:33.808962"
+                    },
+                    {
+                        "code": "002",
+                        "name": "Aceh Barat Daya",
+                        "updated_at": "2017-09-20 16:31:46.332824"
+                    },
+                    {
+                        "code": "003",
+                        "name": "Aceh Besar",
+                        "updated_at": "2017-09-20 16:31:46.332824"
+                    },
+                    {
+                        "code": "004",
+                        "name": "Aceh Jaya",
+                        "updated_at": "2017-09-20 16:31:46.332824"
+                    },
+                ]
+            }
+
+#Group Mitra Bisnis Tipe Customer
+API untuk request daftar mitra bisnis yang bertipe customer
+
+## Struktur Data
+- id `(bigint)` - ID Mitra Bisnis
+- code `(string)` - Kode Mitra Bisnis
+- name `(string)` - Nama Mitra Bisnis
+- saletax_code `(string)` `(fk kode pajak)` - Kode pajak yang digunakan saat penjualan
+- purctax_cde `(string)` `(fk kode pajak)` - Kode pajak yang digunakan saat pembelian
+- srep_id `(bigint)` `(fk id sales)` - ID Sales
+- taxedonpurc `(boolean)` - Boolean Pembelian Menggunakan Pajak
+- taxinconpurc `(boolean)` - Booelean Pembelian Menggunakan Harga Termasuk Pajak
+- taxedonsale `(boolean)` - Boolean Penjualan Menggunakan Pajak
+- taxinconsale `(boolean)` - Boolean Penjualan Menggunakan Harga Termasuk Pajak
+- address `(string)` - Alamat Mitra Bisnis
+- city_code `(string)` `(fk kode kota)`- Kode Kota
+- namecont `(string)` - Nama Kontak Mitra Bisnis
+- mobile `(string)` - No Handphone Mitra Bisnis 
+- coordinate `(string)` - Koordinat Peta Mitra Bisnis (untuk Sales Order Mobile)
+- ownname `(string)` - Pemilik Usaha Mitra Bisnis
+- businessname `(string)` - Nama Usaha / Perusahaan
+
+
+## Request [/bp]
+
+### Daftar Semua Mitra Bisnis [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+    + Body
+    
+            {
+                "status" : "true",
+                "data": [
+                    {
+                        "id": 1,
+                        "code": "CASH",
+                        "name": "CASH",
+                        "version": 1,
+                        "saletax_code": "PPN",
+                        "purctax_code": "PPN",
+                        "srep_id": null,
+                        "anniversary": null,
+                        "taxedonpurc": true,
+                        "taxinconpurc": false,
+                        "taxedonsale": true,
+                        "taxinconsale": false,
+                        "taxregno": null,
+                        "vatregno": null,
+                        "vatregdate": null,
+                        "bankname": null,
+                        "bankaccno": null,
+                        "bankaccname": null,
+                        "email": null,
+                        "website": null,
+                        "note": null,
+                        "bpgrp1_id": null,
+                        "bpgrp2_id": null,
+                        "bpgrp3_id": null,
+                        "pricelvl_id": 1,
+                        "active": true,
+                        "created_at": null,
+                        "created_by": null,
+                        "updated_at": "2017-09-20 16:31:46.672547",
+                        "updated_by": null,
+                        "collector_id": null,
+                        "isimport": false,
+                        "coordinate": null,
+                        "taxnikno": null,
+                        "taxnikname": null,
+                        "address": null,
+                        "city_code": null,
+                        "namecont": null,
+                        "mobile": null
+                    },
+                    {
+                        "id": 2,
+                        "code": "01001",
+                        "name": "Monkey D. Luffy",
+                        "version": 1,
+                        "saletax_code": null,
+                        "purctax_code": "PPN",
+                        "srep_id": null,
+                        "anniversary": null,
+                        "taxedonpurc": false,
+                        "taxinconpurc": false,
+                        "taxedonsale": false,
+                        "taxinconsale": false,
+                        "taxregno": "",
+                        "vatregno": "",
+                        "vatregdate": null,
+                        "bankname": "",
+                        "bankaccno": "",
+                        "bankaccname": "",
+                        "email": null,
+                        "website": null,
+                        "note": "",
+                        "bpgrp1_id": null,
+                        "bpgrp2_id": null,
+                        "bpgrp3_id": null,
+                        "pricelvl_id": 1,
+                        "active": true,
+                        "created_at": "2016-02-26 10:15:24.458229",
+                        "created_by": 3,
+                        "updated_at": "2017-03-06 16:41:11.648204",
+                        "updated_by": 3,
+                        "collector_id": null,
+                        "isimport": false,
+                        "coordinate": null,
+                        "taxnikno": null,
+                        "taxnikname": null,
+                        "address": null,
+                        "city_code": null,
+                        "namecont": null,
+                        "mobile": null
+                    },
+                    {
+                        "id": 3,
+                        "code": "01002",
+                        "name": "Rosinante",
+                        "version": 0,
+                        "saletax_code": null,
+                        "purctax_code": "PPN",
+                        "srep_id": null,
+                        "anniversary": null,
+                        "taxedonpurc": false,
+                        "taxinconpurc": false,
+                        "taxedonsale": false,
+                        "taxinconsale": false,
+                        "taxregno": "",
+                        "vatregno": "",
+                        "vatregdate": null,
+                        "bankname": "",
+                        "bankaccno": "",
+                        "bankaccname": "",
+                        "email": null,
+                        "website": null,
+                        "note": "",
+                        "bpgrp1_id": null,
+                        "bpgrp2_id": null,
+                        "bpgrp3_id": null,
+                        "pricelvl_id": 1,
+                        "active": true,
+                        "created_at": "2016-03-03 13:11:48.661292",
+                        "created_by": 3,
+                        "updated_at": "2016-03-03 13:11:48.661292",
+                        "updated_by": 3,
+                        "collector_id": null,
+                        "isimport": false,
+                        "coordinate": null,
+                        "taxnikno": null,
+                        "taxnikname": null,
+                        "address": "Jl. Raya Juanda Baru No. 46",
+                        "city_code": "178",
+                        "namecont": null,
+                        "mobile": null
+                    },
+                    {
+                        "id": 4,
+                        "code": "01003",
+                        "name": "Roronoa Zorro ",
+                        "version": 4,
+                        "saletax_code": null,
+                        "purctax_code": "PPN",
+                        "srep_id": null,
+                        "anniversary": null,
+                        "taxedonpurc": false,
+                        "taxinconpurc": false,
+                        "taxedonsale": false,
+                        "taxinconsale": false,
+                        "taxregno": "",
+                        "vatregno": "",
+                        "vatregdate": null,
+                        "bankname": "",
+                        "bankaccno": "",
+                        "bankaccname": "",
+                        "email": null,
+                        "website": null,
+                        "note": "",
+                        "bpgrp1_id": null,
+                        "bpgrp2_id": null,
+                        "bpgrp3_id": null,
+                        "pricelvl_id": 11,
+                        "active": true,
+                        "created_at": "2016-03-03 14:36:34.534669",
+                        "created_by": 3,
+                        "updated_at": "2018-02-24 23:57:40.251988",
+                        "updated_by": 3,
+                        "collector_id": null,
+                        "isimport": false,
+                        "coordinate": null,
+                        "taxnikno": "35156732972339432",
+                        "taxnikname": "Zorro",
+                        "address": "Jl. Ketapang Keres, Tanggulangin ",
+                        "city_code": "237",
+                        "namecont": "Robert",
+                        "mobile": "083830152746"
+                    },
+                ]
+            }
+            
+## Request POST [/bpclient]
+
+###Tambah Mitra Bisnis Tipe Customer [POST]
++ Request (application/json)
+
+        {
+            "bparray": [{
+                "code": "261199",
+                "address": "Malang",
+                "coordinate": "",
+                "ownname": "Dwiky Rosidi",
+                "hp": "261199",
+                "businessname": "Dwiky Rosidi",
+                "city_code": "227",
+                "pricelvl_id": "1",
+                "email": "dwiky.rosidi@bee.id"
+            }]
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+    + Body
+    
+            {
+                "status" : "true",
+                "data": [{
+                    "BP001" : 1
+                }]
+            }
+            
+
+            
+# Group Order Penjualan
+API untuk request Order Penjualan
+
+## Struktur Data
+- trxno `(string)` `(not null)` : Nomor Transaksi
+- trxdate `(timestamp)` `(not null)` : Tanggal Transaksi
+- bp_id `(bigint)` `(not null)` `(fk id bp)` : ID Customer
+- branch_id `(bigint)` `(fk id branch)` : ID Cabang
+- srep_id `(bigint)` `(fk id srep)` : ID Sales
+- total `(numeric(19,4))` : Total
+- status `(string)` : Status Order Penjualan
+- active `(boolean)` : Boolean Order Penjualan aktif atau tidak
+
+## Request [/so]
+
+### Daftar Order Penjualan [GET]
+
++ Response 401 (application/json)
+    
+    + Body
+            
+            {
+                "status":false,
+                "data":{
+                    "type": "yii\\web\\UnauthorizedHttpException",
+                    "name": "Unauthorized",
+                    "message": "You are requesting with an invalid access token.",
+                    "code": 0,
+                    "status": 401,
+                }
+            }
+
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Authorization: Bearer API Key
+            
+    + Attributes
+            - status
+            - data(array[so])
+            
+    + Body
+    
+            {
+                "status": true,
+                "data": [
+                    {
+                        "trxno": "SO00001009",
+                        "trxdate": "2016-04-21 00:00:00",
+                        "customer": "CASH",
+                        "cabang": null,
+                        "sales": null,
+                        "total": "330000.0000",
+                        "status": "N",
+                        "active": true
+                    },
+                    {
+                        "trxno": "SO00001010",
+                        "trxdate": "2016-04-21 00:00:00",
+                        "customer": "CASH",
+                        "cabang": null,
+                        "sales": null,
+                        "total": "330000.0000",
+                        "status": "N",
+                        "active": true
+                    },
+                    {
+                        "trxno": "SO00001003",
+                        "trxdate": "2016-02-10 00:00:00",
+                        "customer": "CASH",
+                        "cabang": null,
+                        "sales": null,
+                        "total": "1320000.0000",
+                        "status": "F",
+                        "active": false
+                    }
+                ]
+            }
+
+
+# Group Penawaran Penjualan
+API untuk request Penawaran Penjualan
+
+## Struktur Data Request
+- trxno `(string)` `(not null)` : Nomor Transaksi
+- trxdate `(timestamp)` `(not null)` : Tanggal Transaksi
+- bp_id `(bigint)` `(fk id bp)` : ID Customer
+- branch_id `(bigint)` `(fk id branch)` : ID Cabang
+- srep_id `(bigint)` `(fk id srep)` : ID Sales
+- isdraft `(boolean)` : Boolean Draft Penawaran Penjualan
+- active `(boolean)` : Boolean Penawaran Penjualan aktif atau tidak
+
+## Strutur Data Create
+- trxno `(string)` `(not null)` : Nomor Transaksi
+- trxdate `(timestamp)` `(not null)` : Tanggal Transaksi
+- dno `(smallint)` : Detail Nomor
+- bp_id `(bigint)` `(fk id bp)` : ID Customer
+- crc_id `(bigint)` `(fk id crc)` : ID Mata Uang
+- srep_id `(bigint)` `(fk id srep)` : ID Sales
+- unit `(bigint)` `(fk id unit)` : ID Satuan
+- conv `(numeric)` : Konversi Satuan
+- discexp `(string)` : Diskon %
+- discamt `(numeric)` : Diskon
+- item_id `(bigint)` : ID Item
+- itemname `(string)` : Nama Item
+- listprice `(numeric)` : Harga
+- qty `(numeric)` : Jumalah Barang
+- subtotal `(numeric)` : Subtotal
+- total `(numeric)` : Total Harga
+- tax_code `(string)` : Kode Pajak
+- taxableamt `(numeric)` : Kena Pajak
+- taxamt `(numeric)` : Nilai Pajak
+- taxinc `(boolean)` : Harga Termasuk Pajak
+- totaldiscamt `(numeric)` : Total Diskon
+- basefistotal `(numeric)` : Dasar Total Kurs Pajak
+- baseprice `(numeric)` : Harga Dasar
+- basesubtotal `(numeric)` : Dasar Subtotal
+- basetotaltaxamt `(numeric)` : Total Nilai Pajak Dasar
+
+## Request [/sq]
+
+### Daftar Penawaran Penjualan [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Authorization: Bearer API Key
+        
+    + Attributes
+            - status 
+            - data([sq])
+            
+    + Body 
+            
+            {
+                "status" : true,
+                "data" : [
+                    {
+                        "trxno": "SQ00001026",
+                        "trxdate": "2016-10-12 00:00:00",
+                        "customer": "CASH",
+                        "cabang": null,
+                        "sales": null,
+                        "active": true,
+                        "isdraft": false
+                    },
+                    {
+                        "trxno": "SQ00001001",
+                        "trxdate": "2016-02-10 00:00:00",
+                        "customer": "CASH",
+                        "cabang": null,
+                        "sales": null,
+                        "active": false,
+                        "isdraft": false
+                    },
+                    {
+                        "trxno": "SQ00001007",
+                        "trxdate": "2016-05-20 00:00:00",
+                        "customer": "CASH",
+                        "cabang": null,
+                        "sales": null,
+                        "active": true,
+                        "isdraft": false
+                    }
+                ]
+            }
+
+
+### Tambah Penawaran Penjualan [POST]
+
++ Request (applicaion/json)
+
+        {  
+               "sqarray":[  
+                  {  
+                     "bp_id":"587",
+                     "crc_id":"1",
+                     "discexp":"0",
+                     "sqds":[
+                        {  
+                           "basefistotaltaxamt":"0",
+                           "baseprice":"110400",
+                           "basesubtotal":"1104000",
+                           "basetotaltaxamt":"0",
+                           "conv":"1",
+                           "discamt":"0",
+                           "discexp":"0",
+                           "dno":"5",
+                           "item_id":"3",
+                           "itemname":"DUALSHOCK PS3",
+                           "listprice":"110400",
+                           "qty":"1",
+                           "subtotal":"1104000",
+                           "tax_code":"PPN",
+                           "taxableamt":"0",
+                           "taxamt":"0",
+                           "totaldiscamt":"0",
+                           "unit":"293",
+                           "wh_id":1
+                        }
+                     ],
+                     "srep_id":2,
+                     "subtotal":"110400",
+                     "taxamt":"0",
+                     "taxinc":false,
+                     "total":"110400",
+                     "trxdate":"Wed Sep 12 14:46:22 GMT+07:00 2018",
+                     "trxno":"100"
+                  }
+               ]
+            }
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Authorization: Bearer API Key
+    + Body
+    
+            {
+                "status": true,
+                "data": "Data Successfully Saved",
+            }
+            
+# Group Penjualan
+API untuk request Penjualan
+
+## Struktur Data
+- trxno `(string)` `(not null)` : Nomor Transaksi
+- trxdate `(timestamp)` `(not null)` : Tanggal Transaksi
+- bp_id `(bigint)` `(fk id bp)` : ID Customer 
+- branch_id `(bigint)` `(fk id branch)` : ID Cabang
+- crc_id `(bigint)` `(fk id crc)` : ID Mata Uang
+- srep_id `(bigint)` `(fk id srep)` : ID Sales
+- paidamt `(numeric)` : Nilai yang sudah dibayar
+- paystatus `(string)` : Status Pembayaran
+- total `(numeric)` : Total Pembayaran
+
+## Request [/sale]
+
+### Daftar Penjualan [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Authorization: Bearer API Key
+        
+    + Attributes
+            - status 
+            - data(array[sale])
+    
+    + Body 
+    
+            {
+                "status": true,
+                "data": [
+                    {
+                        "trxno": "JL00001003",
+                        "trxdate": "2016-02-11",
+                        "customer": "CASH",
+                        "branch": null,
+                        "total": "1200000.0000",
+                        "paidamt": "1200000.0000",
+                        "crc": "Rupiah",
+                        "sales": null,
+                        "paystatus": "F"
+                    },
+                    {
+                        "trxno": "JL00001006",
+                        "trxdate": "2016-02-26",
+                        "customer": "Monkey D. Luffy",
+                        "branch": null,
+                        "total": "1000000.0000",
+                        "paidamt": "1000000.0000",
+                        "crc": "Rupiah",
+                        "sales": null,
+                        "paystatus": "F"
+                    },
+                    {
+                        "trxno": "JL00001009",
+                        "trxdate": "2016-02-29",
+                        "customer": "CASH",
+                        "branch": null,
+                        "total": "2420000.0000",
+                        "paidamt": "2420000.0000",
+                        "crc": "Rupiah",
+                        "sales": null,
+                        "paystatus": "F"
+                    },
+                ]
+            }
+            
+#Group Sinkron Transaksi
+API untuk sinkron Transaksi Buka Kasir atau Tutup Kasir, Penyesuaian Kas, Mutasi Kas, dan Penjualan
+
+##Struktur Data Buka Kasir atau Tutup Kasir (Posses)
+- id `(bigint)` `(not null)` - ID Posses
+- trxno `(string)` `(not null)` - Nomer Transaksi Posses
+- trxdate `(timestamp)` `(not null)` - Tanggal Transaksi Posses
+- cashier_id `(bigint)` `(fk id terminal kasir)` - ID Terminal Kasir
+- emp_id `(bigint)` `(fk id pegawai)` - ID Pegawai
+- shift `(varchar)` `(not null)` - Shift Kasir
+- starttime `(timestamp)` `(not null)` - Waktu mulai kasir
+- endtime `(timestamp)` `(not null)` - Waktu selesai kasir
+- startbal `(numeric)` `(not null)` - Nominal saldo buka kasir
+- endbal `(numeric)` `(not null)` - Nominal saldo tutup kasir
+- totin `(numeric)` `(not null)` - Nominal total saldo masuk
+- totout `(numeric)` `(not null)` - Nominal total saldo keluar
+- iscollected `(boolean)` - Boolean shift tersetor atau tidak
+- usr_id `(bigint)` `(not null)` `(fk id user)` - ID user
+
+##Struktur Data Penyesuaian Kas (Cadjs)
+- id `(bigint)` `(not null)` - ID Penyesuaian Kas
+- trxno `(varchar)` `(not null)` - Nomer Transaksi Penyesuaian Kas
+- trxdate `(timestamp)` `(not null)` - Tanggal Transaksi Penyesuaian Kas
+- branch_id `(bigint)` `(fk id cabang)` - ID Cabang
+- emp_id `(bigint)` `(fk id pegawai)` - ID Pegawai
+- bp_id `(bigint)` `(fk id mitra bisnis)` - ID Mitra Bisnis
+- reftype `(varchar)` - Tipe Referensi
+- refid `(bigint)` - ID Referensi
+- trxtype `(varchar)` - Tipe Transaksi
+- trxitype `(varchar)` - Input Tipe Transaksi
+- isdraft `(boolean)` - Boolean Draft
+- status `(varchar)` - Status Transaksi
+- note `(text)` - Keterangan
+- crc_id `(bigint)` `(fk id mata uang)` - ID Mata Uang
+- prj_id `(bigint)` `(fk id proyek)` - ID Proyek
+- dept_id `(bigint)` `(fk id departemen)` - ID Departemen
+- cash_id `(bigint)` `(fk id kas)` - ID Kas
+- acc_cadj `(bigint)` `(fk id akun)` - ID Akun Penyesuaian Kas
+- amount `(numeric)` - Saldo Penyesuaian Kas
+
+##Struktur Data Mutasi Kas (Cstrs)
+- id `(bigint)` `(not null)` - ID Mutasi Kas
+- trxno `(varchar)` `(not null)` - Nomer Transaksi Mutasi Kas
+- trxdate `(timestamp)` `(not null)` - Tanggal Transaksi Mutasi Kas
+- branch_id `(bigint)` `(fk id cabang)` - ID Cabang
+- reftype `(varchar)` - Tipe Referensi
+- refid `(bigint)` - ID Referensi
+- cash_id1 `(bigint)` `(not null)` `(fk id kas)` - ID Kas Asal
+- cash_id2 `(bigint)` `(not null)` `(fk id kas)` - ID Kas Tujuan
+- excrate1 `(numeric)` `(not null)` - Kurs Kas Asal
+- excrate2 `(numeric)` `(not null)` - Kurs Kas Tujuan
+- amount1 `(numeric)` `(not null)` - Saldo Kas Asal
+- amount2 `(numeric)` `(not null)` - Saldo Kas Tujuan
+
+##Struktur Data Master Penjualan (Sales)
+- id `(bigint)` `(not null)` - ID Penjualan Kas
+- trxno `(varchar)` `(not null)` - Nomer Transaksi Penjualan
+- trxdate `(timestamp)` `(not null)` - Tanggal Transaksi Penjualan
+- termtype `(varchar)` - Tipe Termin
+- cash_id `(bigint)` `(not null)` `(fk id kas)` - ID Kas
+- branch_id `(bigint)` `(fk id cabang)` - ID Cabang
+- cashier_id `(bigint)` `(fk id terminal kasir)` - ID Terminal Kasir
+- bp_id `(bigint)` `(fk id mitra bisnis)` - ID Mitra Bisnis
+- trxtype `(bigint)` - Tipe Transaksi
+- isvoid `(boolean)` - Boolean Void
+- taxed `(boolean)` - Boolean Pajak
+- taxinc `(boolean)` - Boolean Harga Termasuk Pajak
+- crc_id `(bigint)` `(fk id mata uang)` - ID Mata Uang
+- excrate `(numeric)` - Kurs Mata Uang
+- fisrate `(numeric)` - Kurs Fiskal Mata Uang
+- billaddr `(text)` - Alamat Penagihan
+- shipaddr `(text)` - Alamat Pengiriman
+- discexp `(varchar)` - Diskon Master Expression
+- discamt `(numeric)` - Saldo Diskon Master
+- taxamt `(numeric)` - Saldo Pajak
+- paystatus `(varchar)` - Status Pembayaran
+
+##Struktur Data Detail Penjualan (Saleds)
+- dno `(smallint)` - Detail Nomor
+- wh_id `(bigint)` `(fk id gudang)` - ID Gudang
+- item_id `(bigint)` `(fk id item)` - ID Item
+- itemname `(varchar)` - Nama Item
+- pid `(varchar)` - PID Item
+- qty `(numeric)` - Qty Item
+- unit `(bigint)` `(fk id unit)` - ID Satuan Item
+- conv `(bigint)` - Conversi Satuan Item
+- listprice `(numeric)` - Harga Item
+- discexp `(varchar)` - Diskon Expression Detail Item
+- discamt `(numeric)` - Saldo Diskon Detail
+- baseprice `(numeric)` - Harga Dasar Item (jika memiliki mata uang asing)
+- basesubtotal `(numeric)` - Dasar Subtotal Item (jika memiliki mata uang asing)
+
+##Struktur Data Penerimaan Penjualan (Salecrcvs)
+- rcvtype_code `(varchar)` - Kode Penerimaan Penjualan
+- ref_id `(bigint)` - ID Referensi Penerimaan Penjualan
+- rcvamt `(numeric)` - Saldo Penerimaan Penjualan
+
+##Request [/sync]
+
+###Sinkron Data Transaksi [POST]
+
++ Request (application/json)
+
+        {
+            "meta":{
+                "branch_id":4,
+                "cashier_id":11,
+                "sync_at":"2018-04-19 09:46:16"
+            },"sales":[
+            {  
+                "trxno":"JL/SBY11180419/0001",
+                "trxdate":"2018-04-19 00:00:00",
+                "termtype":"C",
+                "cash_id":21,
+                "branch_id":4,
+                "cashier_id":11,
+                "bp_id":1,
+                "trxtype":"S",
+                "isvoid":false,
+                "created_by":21,
+                "updated_by":21,
+                "reserved_var1":"PS/SBY21180419/0001",
+                "created_at":"2018-04-19 11:08:05",
+                "updated_at":"2018-04-19 11:08:05",
+                "taxed":false,
+                "taxinc":false,
+                "crc_id":1,
+                "excrate":1.0000,
+                "fisrate":1.0000,
+                "billaddr":"CASH",
+                "shipaddr":"CASH",
+                "subtotal":163500.0000,
+                "basesubtotal":163500.0000,
+                "discexp":"10000",
+                "discamt":10000.0000,
+                "basediscamt":10000.0000,
+                "taxamt":0.0000,
+                "basetaxamt":0.0000,
+                "basftaxamt":0.0000,
+                "total":153500.0000,
+                "basetotal":153500.0000,
+                "paystatus":"N",
+                "saleds":[  
+                    {  
+                        "dno":1,
+                        "wh_id":2,
+                        "item_id":1802,
+                        "itemname":"Nutrilon Soya 3 400gr",
+                        "pid":"",
+                        "qty":2.0000,
+                        "unit":5238,
+                        "conv":1.0000,
+                        "qtyx":0.0000,
+                        "cost":0.0000,
+                        "baseprice":85000.0000,
+                        "listprice":85000.0000,
+                        "discexp":"10%",
+                        "discamt":8500.0000,
+                        "totaldiscamt":17000.0000,
+                        "disc2amt":4679.0000,
+                        "totaldisc2amt":9358.0000,
+                        "subtotal":153000.0000,
+                        "basesubtotal":153000.0000
+                    },
+                    {  
+                        "dno":2,
+                        "wh_id":2,
+                        "item_id":1993,
+                        "itemname":"ABC Sardins Chilli",
+                        "pid":"",
+                        "qty":1.0000,
+                        "unit":5811,
+                        "conv":1.0000,
+                        "qtyx":0.0000,
+                        "cost":0.0000,
+                        "baseprice":10500.0000,
+                        "listprice":10500.0000,
+                        "discexp":"",
+                        "discamt":0.0000,
+                        "totaldiscamt":0.0000,
+                        "disc2amt":642.0000,
+                        "totaldisc2amt":642.0000,
+                        "subtotal":10500.0000,
+                        "basesubtotal":10500.0000
+                    }
+                ],
+                "salecrcvs":[  
+                    {  
+                        "rcvtype_code":"CASH",
+                        "ref_id":21,
+                        "rcvamt":160000.0000
+                    },
+                    {  
+                        "rcvtype_code":"CHG",
+                        "ref_id":21,
+                        "rcvamt":6500.0000
+                    }
+                ]
+            }
+            ],
+            "cadjs":[
+                "trxno":"CD/SBY11180419/0001",
+                "trxdate":"2018-04-19 00:00:00",
+                "branch_id":4,
+                "created_at":"2018-04-19 10:25:02",
+                "updated_at":"2018-04-19 10:25:02",
+                "reftype":"POSSES",
+                "reserved_var1":"PS/SBY21180419/0001",
+                "note":"makan siang",
+                "cash_id":21,
+                "crc_id":1,
+                "excrate":1.0000,
+                "fisrate":1.0000,
+                "acc_cadj":89,
+                "amount":-2000.0000
+            ],
+            "cstrs":[
+                "trxno":"CT/SBY21180419/0002",
+                "trxdate":"2018-04-19 00:00:00",
+                "branch_id":4,
+                "reftype":"POSSES",
+                "refno":"PS/SBY21180419/0001",
+                "cash_id1":14,
+                "cash_id2":21,
+                "excrate1":1.0000,
+                "excrate2":1.0000,
+                "amount1":200000.0000,
+                "amount2":200000.0000
+            ],
+            "posseses":[
+            {
+                "trxno":"PS/SBY21180417/0001",
+                "trxdate":"2018-04-17 00:00:00",
+                "cashier_id":11,
+                "shift":"1",
+                "starttime":"2018-04-17 14:36:10",
+                "startbal":200000,
+                "totin":8700,
+                "totout":0,
+                "endbal":208700,
+                "iscollected":false,
+                "usr_id":21
+            },
+            {
+                "trxno":"PS/SBY21180417/0001",
+                "trxdate":"2018-04-17 00:00:00",
+                "cashier_id":11,
+                "shift":"1",
+                "starttime":"2018-04-17 14:36:10",
+                "endtime":"2018-04-19 09:46:16",
+                "startbal":200000.0000,
+                "totin":8700.0000,
+                "totout":0.0000,
+                "endbal":208700.0000,
+                "iscollected":true,
+                "usr_id":21
+            }
+            ]
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Authorization: Bearer API Key
+    + Body
+    
+            {
+                "status" : "true",
+                "data": "99"
+            }
+            
